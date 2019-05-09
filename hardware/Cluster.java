@@ -51,6 +51,8 @@ public class Cluster {
         int numBlock = 0;
         DataBlock block = null;
 
+        int allBlocks = 0;
+
         for (int idUser = 0; idUser < dataByUser.length; idUser++) {
 
             // each user has certain amount of data. the data has to be split into blocks
@@ -62,16 +64,13 @@ public class Cluster {
 
             numBlock *= Config.dataReplication;
 
-            System.out.println("Number of blocks: " + numBlock);
+            allBlocks += numBlock;
 
             for (int idBlock = 0; idBlock < numBlock; idBlock++) {
-                for (int nodeNumber = 0; nodeNumber < Config.numNodes; nodeNumber++) {
-                    // add the block into several nodes based on the replication
-                        nodes[nodeNumber].addBlock(block);
-                }
+
+                // maybe randomize the block placement is better
+                nodes[new Random().nextInt(Config.numNodes)].addBlock(block);
             }
         }
-
-
     }
 }

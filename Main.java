@@ -27,7 +27,7 @@ public class Main {
 
         // distribute the data blocks
         cluster.distributeData(data);
-        
+
         // generate the jobs. One user one job
         Mapper[] mappers = new Mapper[Config.numUsers];
         for (int i=0; i<mappers.length; i++) {
