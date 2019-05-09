@@ -29,12 +29,12 @@ public class Scheduler {
 
             int nodeNumber = 0;
             while (true) {
+                if (nodeNumber == cluster.getNodes().length)
+                    nodeNumber = 0;
                 if (nodes[nodeNumber].hasMapSlot()) {
                     nodes[nodeNumber].addMap(mappers[i]);
                     break;
                 }
-                if (nodeNumber == cluster.getNodes().length)
-                    nodeNumber = 0;
                 nodeNumber++;
             }
         }
@@ -111,22 +111,36 @@ public class Scheduler {
                         ArrayList<Mapper> mappers = mrNodes[i].getMapSlot();
 
                         Mapper runningMapper = mappers.get(0); // run from the first mapper, cause this is FIFO
-                        int progress = new Random().nextInt(mapRunLengths.get(0)); // generate random current progress
-                        int progressRate = new Random().nextInt(mapRunLengths.get(0)); // generate random progress rate for each mapper
 
-                        // LATE algorithm
-                        double progressScore = progress / mapRunLengths.get(0);
-                        double specDec = ((1 - progressScore) / progressRate);
+                        // only run if the mapper is in the same node with the data block
+                        if (mrNodes[i].hasBlockOfUser(runningMapper.getUserID())) {
+                            int progress = new Random().nextInt(mapRunLengths.get(0)); // generate random current progress
+                            int progressRate = new Random().nextInt(mapRunLengths.get(0)); // generate random progress rate for each mapper
 
-                        if (specDec < specThres) {
-                            mrNodes[i].deleteMapper(runningMapper);
-                            mapRunLengths.remove(0);
-                            mrNodes[i].addIntermediary(new Intermediary(runningMapper.getUserID()));
-                        } else {
-                            speculateMapper(cluster, i, runningMapper);
-                            mrNodes[i].deleteMapper(runningMapper);
-                            mapRunLengths.remove(0);
+                            // LATE algorithm
+                            double progressScore = progress / mapRunLengths.get(0);
+                            double specDec = ((1 - progressScore) / progressRate);
+
+                            if (specDec < specThres) {
+                                mrNodes[i].deleteMapper(runningMapper);
+                                mapRunLengths.remove(0);
+                                mrNodes[i].addIntermediary(new Intermediary(runningMapper.getUserID()));
+                            } else {
+                                speculateMapper(cluster, i, runningMapper);
+                                mrNodes[i].deleteMapper(runningMapper);
+                                mapRunLengths.remove(0);
+                            }
+                        } else { // the block is not in the current node. find the node containing the block needed
+                            for (int node=0; node<mrNodes.length; node++) {
+                                if (mrNodes[node].hasBlockOfUser(runningMapper.getUserID())) {
+                                    if (mrNodes[node].hasMapSlot()) {
+                                        mrNodes[node].addMap(runningMapper);
+                                        mrNodes[i].deleteMapper(runningMapper);
+                                    }
+                                }
+                            }
                         }
+
                         j++;
                     }
                 }
