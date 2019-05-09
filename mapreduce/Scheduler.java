@@ -7,6 +7,7 @@ import org.apache.commons.math3.distribution.ZipfDistribution;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 
 public class Scheduler {
@@ -153,7 +154,7 @@ public class Scheduler {
         }
     }
 
-    public static Reducer[] scheduleReducer(Cluster cluster) {
+    public static void scheduleReducer(Cluster cluster) {
         ArrayList<Reducer> reducers = new ArrayList<>();
 
         // LBBS Algorithm
@@ -192,23 +193,40 @@ public class Scheduler {
         }
 
         // find the workloads for each nodes
-        int[] heap = new int[Config.numNodes];
+        ArrayList<Integer> heap = new ArrayList<>();
 
         for (int n=0; n<Config.numNodes; n++) {
             int tmp = 0;
             for (int p=0; p<intermediaryPartition; p++) {
                 tmp += partition[p][n];
             }
-            heap[n] = tmp;
-            System.out.println(heap[n]);
+            heap.add(tmp);
         }
 
-        Reducer[] results = (Reducer[]) reducers.toArray();
+        // randomize the number of reducer after shuffled
+        int numReducer = new Random().nextInt(Config.numNodes * Config.numReduceSlots);
 
-        return results;
+        MRNode[] nodes = cluster.getNodes();
+
+        // distribute the reducers
+        while (heap.size() > 0) {
+            int min = 1000000;
+            for (int temp: heap) {
+                if (temp < min)
+                    min = temp;
+            }
+
+            // distribute Reducer while still any
+            if (numReducer > 0) {
+                nodes[heap.indexOf((Integer) min)].addReduce(new Reducer(new Random().nextInt(numReducer)));
+            }
+
+            heap.remove((Integer) min);
+        }
+
     }
 
-    public static void runReducer(Cluster cluster, Reducer[] reducer) {
+    public static void runReducer(Cluster cluster) {
 
         // the length of reducer is using Zipf distribution
         MRNode[] mrNodes = cluster.getNodes();

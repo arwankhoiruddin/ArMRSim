@@ -15,8 +15,6 @@ import javax.xml.crypto.Data;
 
 public class Main {
 
-    // define simulation variables here
-
     public static void main(String[] args) {
 
         // randomize the users data
@@ -43,9 +41,9 @@ public class Main {
         System.out.println("mapper finished");
 
         // schedule the reducer
-        Reducer[] reducers = Scheduler.scheduleReducer(cluster);
+        Scheduler.scheduleReducer(cluster);
 
-        Scheduler.runReducer(cluster, reducers);
+        Scheduler.runReducer(cluster);
         // run reducers phase and speculate when needed
 //
         System.out.println("Finished running");

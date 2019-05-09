@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="68f84bbf-4725-44aa-b345-ce0ab40601ee" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/hardware/MRNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/hardware/MRNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coba.java" beforeDir="false" afterPath="$PROJECT_DIR$/Coba.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mapreduce/Scheduler.java" beforeDir="false" afterPath="$PROJECT_DIR$/mapreduce/Scheduler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MRSimulator/src/edu/buffalo/ArwTests/ArwCompletableFuture.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MRSimulator/src/edu/buffalo/ArwTests/ArwCompletableFuture.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../fp-hadoop" beforeDir="false" afterPath="$PROJECT_DIR$/../fp-hadoop" afterDir="false" />
@@ -25,8 +26,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="247">
-              <caret line="45" column="39" selection-start-line="45" selection-start-column="39" selection-end-line="45" selection-end-column="39" />
+            <state relative-caret-position="121">
+              <caret line="15" column="19" selection-start-line="15" selection-start-column="19" selection-end-line="15" selection-end-column="19" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -37,8 +38,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Coba.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" column="1" lean-forward="true" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
+            <state relative-caret-position="270">
+              <caret line="18" column="50" lean-forward="true" selection-start-line="18" selection-start-column="50" selection-end-line="18" selection-end-column="50" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -49,8 +50,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/mapreduce/Scheduler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="81">
-              <caret line="106" selection-start-line="106" selection-end-line="106" />
+            <state relative-caret-position="118">
+              <caret line="217" selection-start-line="217" selection-end-line="217" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2998#3007#0" expanded="true" />
@@ -85,8 +86,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/hardware/MRNode.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="297">
-              <caret line="54" column="29" lean-forward="true" selection-start-line="54" selection-start-column="29" selection-end-line="54" selection-end-column="29" />
+            <state relative-caret-position="137">
+              <caret line="80" column="23" selection-start-line="80" selection-start-column="16" selection-end-line="80" selection-end-column="23" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#620#621#0" expanded="true" />
@@ -141,6 +142,8 @@
       <find>intermedia</find>
       <find>running map</find>
       <find>sampe sini</find>
+      <find>addredu</find>
+      <find>minimum</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -158,11 +161,11 @@
         <option value="$PROJECT_DIR$/mapreduce/Mapper.java" />
         <option value="$PROJECT_DIR$/mapreduce/Reducer.java" />
         <option value="$PROJECT_DIR$/mapreduce/Intermediary.java" />
-        <option value="$PROJECT_DIR$/Coba.java" />
         <option value="$PROJECT_DIR$/config/Config.java" />
         <option value="$PROJECT_DIR$/hardware/Cluster.java" />
-        <option value="$PROJECT_DIR$/Main.java" />
         <option value="$PROJECT_DIR$/hardware/MRNode.java" />
+        <option value="$PROJECT_DIR$/Coba.java" />
+        <option value="$PROJECT_DIR$/Main.java" />
         <option value="$PROJECT_DIR$/mapreduce/Scheduler.java" />
       </list>
     </option>
@@ -356,16 +359,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Coba.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="1" lean-forward="true" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/config/Config.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="248">
@@ -390,8 +383,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/hardware/MRNode.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="54" column="29" lean-forward="true" selection-start-line="54" selection-start-column="29" selection-end-line="54" selection-end-column="29" />
+        <state relative-caret-position="137">
+          <caret line="80" column="23" selection-start-line="80" selection-start-column="16" selection-end-line="80" selection-end-column="23" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#620#621#0" expanded="true" />
@@ -408,10 +401,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Coba.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="50" lean-forward="true" selection-start-line="18" selection-start-column="50" selection-end-line="18" selection-end-column="50" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="45" column="39" selection-start-line="45" selection-start-column="39" selection-end-line="45" selection-end-column="39" />
+        <state relative-caret-position="121">
+          <caret line="15" column="19" selection-start-line="15" selection-start-column="19" selection-end-line="15" selection-end-column="19" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -420,8 +423,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/mapreduce/Scheduler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="81">
-          <caret line="106" selection-start-line="106" selection-end-line="106" />
+        <state relative-caret-position="118">
+          <caret line="217" selection-start-line="217" selection-end-line="217" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2998#3007#0" expanded="true" />
