@@ -89,6 +89,14 @@ public class MRNode {
         return this.reduceSlot;
     }
 
+    public ArrayList<Intermediary> getIntermediaries() {
+        return this.intermediaries;
+    }
+
+    public ArrayList<DataBlock> getDataBlocks() {
+        return this.dataBlocks;
+    }
+
     public void deleteMapper(Mapper mapper) {
         this.mapSlot.remove(mapper);
     }

@@ -25,7 +25,7 @@ public class Config {
         int[] data = new int[Config.numUsers];
 
         for (int i = 0; i < Config.numUsers; i++) {
-            data[i] = (10 + new Random().nextInt(1000)) * 1024; // some random gigs data
+            data[i] = (10 + new Random().nextInt(100)); // some random megs data
         }
         return data;
     }

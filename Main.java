@@ -4,9 +4,14 @@ import hardware.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+import mapreduce.DataBlock;
 import mapreduce.Mapper;
+import mapreduce.Reducer;
 import mapreduce.Scheduler;
 import org.apache.commons.math3.distribution.ZipfDistribution;
+
+import javax.swing.plaf.synth.SynthCheckBoxUI;
+import javax.xml.crypto.Data;
 
 public class Main {
 
@@ -22,7 +27,7 @@ public class Main {
 
         // distribute the data blocks
         cluster.distributeData(data);
-
+        
         // generate the jobs. One user one job
         Mapper[] mappers = new Mapper[Config.numUsers];
         for (int i=0; i<mappers.length; i++) {
@@ -38,9 +43,11 @@ public class Main {
         System.out.println("mapper finished");
 
         // schedule the reducer
-        Scheduler.runReducer(cluster);
-        // run reducers phase and speculate when needed
+        Reducer[] reducers = Scheduler.scheduleReducer(cluster);
 
+        Scheduler.runReducer(cluster, reducers);
+        // run reducers phase and speculate when needed
+//
         System.out.println("Finished running");
     }
 }

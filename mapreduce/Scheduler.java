@@ -7,7 +7,6 @@ import org.apache.commons.math3.distribution.ZipfDistribution;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.Random;
 
 public class Scheduler {
@@ -80,7 +79,7 @@ public class Scheduler {
     }
 
     public static void runMapper(Cluster cluster) {
-        System.out.println("Running mapper");
+        System.out.println("Start running mapper");
         // the length of mapper is using Zipf distribution
         MRNode[] mrNodes = cluster.getNodes();
         int maxLengthRun = 1000;
@@ -92,7 +91,6 @@ public class Scheduler {
         int numMappers = 100000;
 
         while (numMappers != 0) {
-            System.out.println("Num mappers: " + numMappers);
 
             for (int i=0; i<mrNodes.length; i++) {
 
@@ -106,14 +104,19 @@ public class Scheduler {
 
                     int j = 0;
                     while (true) {
-                        if (mrNodes[i].getMapSlot().size() == 0) break;
+                        System.out.println("Running mapper");
 
+                        if (mrNodes[i].getMapSlot().size() == 0) break;
+                        if (j == Config.numUsers) break;
+
+                        System.out.println("size of the mapslot: " + mrNodes[i].getMapSlot().size());
                         ArrayList<Mapper> mappers = mrNodes[i].getMapSlot();
 
                         Mapper runningMapper = mappers.get(0); // run from the first mapper, cause this is FIFO
 
                         // only run if the mapper is in the same node with the data block
                         if (mrNodes[i].hasBlockOfUser(runningMapper.getUserID())) {
+                            System.out.println("in node");
                             int progress = new Random().nextInt(mapRunLengths.get(0)); // generate random current progress
                             int progressRate = new Random().nextInt(mapRunLengths.get(0)); // generate random progress rate for each mapper
 
@@ -124,13 +127,13 @@ public class Scheduler {
                             if (specDec < specThres) {
                                 mrNodes[i].deleteMapper(runningMapper);
                                 mapRunLengths.remove(0);
-                                mrNodes[i].addIntermediary(new Intermediary(runningMapper.getUserID()));
                             } else {
                                 speculateMapper(cluster, i, runningMapper);
                                 mrNodes[i].deleteMapper(runningMapper);
                                 mapRunLengths.remove(0);
                             }
                         } else { // the block is not in the current node. find the node containing the block needed
+                            System.out.println("not in node");
                             for (int node=0; node<mrNodes.length; node++) {
                                 if (mrNodes[node].hasBlockOfUser(runningMapper.getUserID())) {
                                     if (mrNodes[node].hasMapSlot()) {
@@ -154,13 +157,68 @@ public class Scheduler {
         }
     }
 
-    public static void runReducer(Cluster cluster) {
+    public static Reducer[] scheduleReducer(Cluster cluster) {
+        ArrayList<Reducer> reducers = new ArrayList<>();
+
+        // LBBS Algorithm
+        // randomly create intermediary results (<Key,Value> results from Map task). To avoid zero, I give 2 as minimum
+        int intermediaryPartition = 2 + new Random().nextInt(100);
+
+
+        int[][] partition = new int[intermediaryPartition][Config.numUsers];
+
+        double[][] locality1 = new double[intermediaryPartition][Config.numNodes];
+        double[][] locality2 = new double[intermediaryPartition][Config.numNodes];
+        double[][] locality = new double[intermediaryPartition][Config.numNodes];
+
+        for (int p=0; p<intermediaryPartition; p++) {
+            for (int n=0; n<Config.numNodes; n++) {
+                // randomize the partition
+                partition[p][n] = new Random().nextInt(100);
+            }
+        }
+
+        for (int p=0; p<intermediaryPartition; p++) {
+            for (int n=0; n<Config.numNodes; n++) {
+                int tmp = 0;
+                for (int i=0; i<intermediaryPartition; i++) {
+                    tmp += partition[i][n];
+                }
+                locality1[p][n] = partition[p][n] / tmp;
+
+                tmp = 0;
+                for (int i=0; i<Config.numNodes; i++) {
+                    tmp += partition[p][i];
+                }
+                locality2[p][n] = partition[p][n] / tmp;
+                locality[p][n] = locality1[p][n] * locality2[p][n];
+            }
+        }
+
+        // find the workloads for each nodes
+        int[] heap = new int[Config.numNodes];
+
+        for (int n=0; n<Config.numNodes; n++) {
+            int tmp = 0;
+            for (int p=0; p<intermediaryPartition; p++) {
+                tmp += partition[p][n];
+            }
+            heap[n] = tmp;
+            System.out.println(heap[n]);
+        }
+
+        return (Reducer[]) reducers.toArray();
+    }
+
+    public static void runReducer(Cluster cluster, Reducer[] reducer) {
+
         // the length of reducer is using Zipf distribution
         MRNode[] mrNodes = cluster.getNodes();
         int maxLengthRun = 100000;
 
         // speculation threshold
         double specThres = 0.7;
+
 
         // keep running while there is still mappers in any nodes
         int numReducers = 100000;

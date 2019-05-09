@@ -48,26 +48,30 @@ public class Cluster {
     }
 
     public void distributeData(int[] dataByUser) {
+        int numBlock = 0;
+        DataBlock block = null;
+
         for (int idUser = 0; idUser < dataByUser.length; idUser++) {
 
             // each user has certain amount of data. the data has to be split into blocks
-            int numBlock = dataByUser[idUser] / Config.blockSize;
+            numBlock = dataByUser[idUser] / Config.blockSize;
             if (dataByUser[idUser] % Config.blockSize != 0) numBlock++;
 
             // block is characterized by user id
-            DataBlock block = new DataBlock(idUser);
+            block = new DataBlock(idUser);
 
-            // block is replicated also
+            numBlock *= Config.dataReplication;
+
+            System.out.println("Number of blocks: " + numBlock);
 
             for (int idBlock = 0; idBlock < numBlock; idBlock++) {
                 for (int nodeNumber = 0; nodeNumber < Config.numNodes; nodeNumber++) {
                     // add the block into several nodes based on the replication
-                    for (int repl = 0; repl < Config.dataReplication; repl++) {
-                        int placement = (nodeNumber + repl) % Config.numNodes;
-                        nodes[placement].addBlock(block);
-                    }
+                        nodes[nodeNumber].addBlock(block);
                 }
             }
         }
+
+
     }
 }
