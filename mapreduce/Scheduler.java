@@ -104,19 +104,16 @@ public class Scheduler {
 
                     int j = 0;
                     while (true) {
-                        System.out.println("Running mapper");
 
                         if (mrNodes[i].getMapSlot().size() == 0) break;
                         if (j == Config.numUsers) break;
 
-                        System.out.println("size of the mapslot: " + mrNodes[i].getMapSlot().size());
                         ArrayList<Mapper> mappers = mrNodes[i].getMapSlot();
 
                         Mapper runningMapper = mappers.get(0); // run from the first mapper, cause this is FIFO
 
                         // only run if the mapper is in the same node with the data block
-                        if (mrNodes[i].hasBlockOfUser(runningMapper.getUserID())) {
-                            System.out.println("in node");
+                        if (mrNodes[i].hasBlockNeeded(runningMapper.getUserID())) {
                             int progress = new Random().nextInt(mapRunLengths.get(0)); // generate random current progress
                             int progressRate = new Random().nextInt(mapRunLengths.get(0)); // generate random progress rate for each mapper
 
@@ -133,9 +130,8 @@ public class Scheduler {
                                 mapRunLengths.remove(0);
                             }
                         } else { // the block is not in the current node. find the node containing the block needed
-                            System.out.println("not in node");
                             for (int node=0; node<mrNodes.length; node++) {
-                                if (mrNodes[node].hasBlockOfUser(runningMapper.getUserID())) {
+                                if (mrNodes[node].hasBlockNeeded(runningMapper.getUserID())) {
                                     if (mrNodes[node].hasMapSlot()) {
                                         mrNodes[node].addMap(runningMapper);
                                         mrNodes[i].deleteMapper(runningMapper);
@@ -207,7 +203,9 @@ public class Scheduler {
             System.out.println(heap[n]);
         }
 
-        return (Reducer[]) reducers.toArray();
+        Reducer[] results = (Reducer[]) reducers.toArray();
+
+        return results;
     }
 
     public static void runReducer(Cluster cluster, Reducer[] reducer) {

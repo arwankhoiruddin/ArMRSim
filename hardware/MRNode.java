@@ -42,11 +42,13 @@ public class MRNode {
         dataBlocks.add(block);
     }
 
-    public boolean hasBlockOfUser(int userID) {
-        if (dataBlocks.contains(userID))
-            return true;
-        else
-            return false;
+    public boolean hasBlockNeeded(int userID) {
+        for (DataBlock block: dataBlocks) {
+            if (block.getUserNumber() == userID) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public MRSwitch getMrSwitch() {
