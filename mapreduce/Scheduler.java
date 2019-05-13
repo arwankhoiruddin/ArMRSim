@@ -119,7 +119,9 @@ public class Scheduler {
                             if (specDec < specThres) {
                                 System.out.println("Running mapper ID: " + runningMapper.getTaskID());
                                 // mapper will create intermediary results
-                                int numIntermediary = 1 + new Random().nextInt(99);
+                                int maxInterm = 20;
+
+                                int numIntermediary = 1 + new Random().nextInt(maxInterm);
                                 // generate the intermediary
                                 for (int interm=0; interm < numIntermediary; interm++) {
                                     Intermediary intermediary = new Intermediary(new Random().nextInt(50));
@@ -188,42 +190,58 @@ public class Scheduler {
     }
 
     public static void scheduleReducer(Cluster cluster) {
-        ArrayList<Reducer> reducers = new ArrayList<>();
+
+        // sort and shuffle phase - sorting the intermediaries
+        MRNode[] nodes = cluster.getNodes();
 
         // LBBS Algorithm
-        // randomly create intermediary results (<Key,Value> results from Map task). To avoid zero, I give 2 as minimum
-        int intermediaryPartition = 2 + new Random().nextInt(100);
+        int intermediaryPartition = 0;
+        ArrayList<Integer> allInterms = new ArrayList<>();
 
+        for (int i=0; i<Config.numNodes; i++) {
+            ArrayList<Intermediary> intermediaries = nodes[i].getIntermediaries();
+            for (Intermediary intermediary: intermediaries) {
+                allInterms.add(intermediary.getDataID());
+            }
 
-        int[][] partition = new int[intermediaryPartition][Config.numUsers];
+            intermediaryPartition += intermediaries.size();
+        }
 
-        double[][] locality1 = new double[intermediaryPartition][Config.numNodes];
-        double[][] locality2 = new double[intermediaryPartition][Config.numNodes];
-        double[][] locality = new double[intermediaryPartition][Config.numNodes];
-
-        for (int p=0; p<intermediaryPartition; p++) {
-            for (int n=0; n<Config.numNodes; n++) {
-                // randomize the partition
-                partition[p][n] = new Random().nextInt(100);
+        // generate the locality matrix
+        int[][] localMatrix = new int[allInterms.size()][Config.numNodes];
+        for (int i=0; i<Config.numNodes; i++) {
+            ArrayList<Intermediary> intermediaries = nodes[i].getIntermediaries();
+            for (Intermediary intermediary: intermediaries) {
+                localMatrix[intermediary.getDataID()][i] = 1;
             }
         }
 
-        for (int p=0; p<intermediaryPartition; p++) {
-            for (int n=0; n<Config.numNodes; n++) {
+        double[][] locality = new double[allInterms.size()][Config.numNodes];
+
+        // calculate the locality
+        for (int i=0; i<Config.numNodes; i++) {
+            for (int j=0; j<allInterms.size(); j++) {
                 int tmp = 0;
-                for (int i=0; i<intermediaryPartition; i++) {
-                    tmp += partition[i][n];
+                for (int k=0; k<Config.numNodes; k++) {
+                    tmp += localMatrix[j][k];
                 }
-                locality1[p][n] = partition[p][n] / tmp;
+                double locality1 = 0;
+                if (tmp != 0)
+                    locality1 = localMatrix[j][i] / tmp;
 
                 tmp = 0;
-                for (int i=0; i<Config.numNodes; i++) {
-                    tmp += partition[p][i];
+                for (int k=0; k<allInterms.size(); k++) {
+                    tmp += localMatrix[k][i];
                 }
-                locality2[p][n] = partition[p][n] / tmp;
-                locality[p][n] = locality1[p][n] * locality2[p][n];
+                double locality2 = 0;
+                if (tmp != 0)
+                    locality2 = localMatrix[j][i] / tmp;
+                locality[j][i] = locality1 * locality2;
             }
         }
+
+        // sort the intermediaries
+        Collections.sort(allInterms);
 
         // find the workloads for each nodes
         ArrayList<Integer> heap = new ArrayList<>();
@@ -231,15 +249,13 @@ public class Scheduler {
         for (int n=0; n<Config.numNodes; n++) {
             int tmp = 0;
             for (int p=0; p<intermediaryPartition; p++) {
-                tmp += partition[p][n];
+                tmp += localMatrix[p][n];
             }
             heap.add(tmp);
         }
 
         // randomize the number of reducer after shuffled
-        int numReducer = new Random().nextInt(Config.numNodes * Config.numReduceSlots);
-
-        MRNode[] nodes = cluster.getNodes();
+        int numReducer = 1 + new Random().nextInt(Config.numNodes * Config.numReduceSlots);
 
         // distribute the reducers
         while (heap.size() > 0) {
@@ -251,7 +267,8 @@ public class Scheduler {
 
             // distribute Reducer while still any
             if (numReducer > 0) {
-                nodes[heap.indexOf((Integer) min)].addReduce(new Reducer(new Random().nextInt(numReducer)));
+                System.out.println("allocating reducer to node number " + min);
+                nodes[heap.indexOf(min)].addReduce(new Reducer(new Random().nextInt(numReducer)));
             }
 
             heap.remove((Integer) min);

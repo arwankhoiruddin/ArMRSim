@@ -39,16 +39,27 @@ public class Main {
 
         System.out.println("mapper finished");
 
-        // print the histories
-        for (int i=0; i<Cluster.histories.size(); i++) {
-            History h = (History) Cluster.histories.get(i);
-            Mapper m = (Mapper) h.getTask();
-            System.out.println(m.getTaskType() + " with ID: " + m.getTaskID() + " and length of: " + m.getLength());
+        // check the intermediaries on each nodes
+        MRNode[] nodes = cluster.getNodes();
+        for (int i=0; i<Config.numNodes; i++) {
+//            System.out.println("Node number: " + i);
+            ArrayList<Intermediary> intermediaries = nodes[i].getIntermediaries();
+//            System.out.println("Number of intermediaries: " + intermediaries.size());
+            for (Intermediary intermediary: intermediaries) {
+//                System.out.println("Intermediary ID: " + intermediary.getDataID());
+            }
         }
-//
-//        // schedule the reducer
-//        Scheduler.scheduleReducer(cluster);
-//
+
+        // schedule the reducer
+        Scheduler.scheduleReducer(cluster);
+
+//        int numReducer = -1;
+//        int nodeNumber = 0;
+//        while (numReducer != 0) {
+//            System.out.println(nodes[nodeNumber].getReduceSlot());
+//            nodeNumber++;
+//        }
+
 //        Scheduler.runReducer(cluster);
 //        // run reducers phase and speculate when needed
 ////
