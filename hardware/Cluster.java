@@ -2,13 +2,17 @@ package hardware;
 
 import config.Config;
 import mapreduce.DataBlock;
+import mapreduce.History;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Cluster {
     private MRNode[] nodes;
     private MRSwitch switch1;
     private MRSwitch switch2;
+
+    public static ArrayList<History> histories = new ArrayList<>();
 
     public Cluster() {
 
@@ -38,13 +42,16 @@ public class Cluster {
     public int getTotalLatency(MRNode nodeFrom, MRNode nodeTo) {
         int totalLatency = 0;
 
-        if (nodeFrom.getMrSwitch().equals(nodeTo.getMrSwitch())) {
+        // generate additional latency (e.g. due to data collision
+        int additionalLatency = new Random().nextInt(100);
+
+        if (nodeFrom.getMrSwitch().equals(nodeTo.getMrSwitch())) { // same switch
             totalLatency = nodeFrom.getMrSwitch().getLatency();
-        } else {
+        } else { // same router different switch
             totalLatency = nodeFrom.getMrSwitch().getLatency() + nodeTo.getMrSwitch().getLatency();
         }
 
-        return totalLatency;
+        return totalLatency + additionalLatency;
     }
 
     public void distributeData(int[] dataByUser) {

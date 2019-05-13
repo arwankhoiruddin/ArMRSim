@@ -1,11 +1,17 @@
 package mapreduce;
 
-public class Intermediary {
-    private int userID;
+import java.util.Random;
 
-    public Intermediary(int userID) {
-        this.userID = userID;
+public class Intermediary {
+    private int dataID;
+    private int size;
+
+    public Intermediary(int dataID) {
+
+        this.dataID = dataID;
+        this.size = 1 + new Random().nextInt(99);
     }
 
-    public int getUserID() { return this.userID; }
+    public int getDataID() { return this.dataID; }
+    public int getSize() { return this.size; }
 }

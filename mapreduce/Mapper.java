@@ -1,15 +1,23 @@
 package mapreduce;
 
-public class Mapper {
+public class Mapper extends MRTask {
 
-    private int userID;
+    private String taskType = "Map";
+
+    public String getTaskType() {
+        return taskType;
+    }
 
     public Mapper(int userID) {
-        this.userID = userID;
+        this.taskID = userID;
     }
 
-    public int getUserID() {
-        return this.userID;
+    public int getTaskID() {
+        return this.taskID;
     }
+    public void setLength(int length) { this.length = length; }
 
+    public int getLength() {
+        return length;
+    }
 }

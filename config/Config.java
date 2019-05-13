@@ -13,7 +13,7 @@ public class Config {
     public static int numMapSlots = 3;
     public static int numReduceSlots = 1;
 
-    public static int numNodes = 10; // the network structure here will use tree topology
+    public static int numNodes = 4; // the network structure here will use tree topology
     public static boolean homogenous = true;
 
     public static int RAM = 4096;

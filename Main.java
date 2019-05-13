@@ -1,13 +1,12 @@
 import config.Config;
 import hardware.*;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Random;
 
-import mapreduce.DataBlock;
-import mapreduce.Mapper;
-import mapreduce.Reducer;
-import mapreduce.Scheduler;
+import mapreduce.*;
 import org.apache.commons.math3.distribution.ZipfDistribution;
 
 import javax.swing.plaf.synth.SynthCheckBoxUI;
@@ -40,12 +39,19 @@ public class Main {
 
         System.out.println("mapper finished");
 
-        // schedule the reducer
-        Scheduler.scheduleReducer(cluster);
-
-        Scheduler.runReducer(cluster);
-        // run reducers phase and speculate when needed
+        // print the histories
+        for (int i=0; i<Cluster.histories.size(); i++) {
+            History h = (History) Cluster.histories.get(i);
+            Mapper m = (Mapper) h.getTask();
+            System.out.println(m.getTaskType() + " with ID: " + m.getTaskID() + " and length of: " + m.getLength());
+        }
 //
-        System.out.println("Finished running");
+//        // schedule the reducer
+//        Scheduler.scheduleReducer(cluster);
+//
+//        Scheduler.runReducer(cluster);
+//        // run reducers phase and speculate when needed
+////
+//        System.out.println("Finished running");
     }
 }

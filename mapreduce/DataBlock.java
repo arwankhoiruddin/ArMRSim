@@ -1,13 +1,13 @@
 package mapreduce;
 
 public class DataBlock {
-    private int userNumber;
+    private int blockNumber;
 
     public DataBlock(int userNumber) {
-        this.userNumber = userNumber;
+        this.blockNumber = userNumber;
     }
 
-    public int getUserNumber() {
-        return this.userNumber;
+    public int getBlockNumber() {
+        return this.blockNumber;
     }
 }

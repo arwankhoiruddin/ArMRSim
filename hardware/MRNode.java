@@ -4,12 +4,15 @@ import config.*;
 import mapreduce.*;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class MRNode {
     // initializations
     private double CPUPower;
     private double RAM;
     private MRSwitch mrSwitch;
+
+    private int occupancyTime;
 
     private ArrayList<DataBlock> dataBlocks = new ArrayList<>();
 
@@ -42,9 +45,9 @@ public class MRNode {
         dataBlocks.add(block);
     }
 
-    public boolean hasBlockNeeded(int userID) {
+    public boolean hasBlockNeeded(int taskID) {
         for (DataBlock block: dataBlocks) {
-            if (block.getUserNumber() == userID) {
+            if (block.getBlockNumber() == taskID) {
                 return true;
             }
         }
@@ -60,6 +63,16 @@ public class MRNode {
             return true;
         else
             return false;
+    }
+
+    public double runTask(MRTask task) {
+        double duration = 0;
+
+        // generate the additional task length due to node noise (e.g. CPU is busy with other tasks)
+        int noise = new Random().nextInt(100);
+
+        duration = noise + (task.length / this.CPUPower);
+        return duration;
     }
 
     public boolean hasReduceSlot() {

@@ -1,15 +1,27 @@
 package mapreduce;
 
-public class Reducer {
+public class Reducer extends MRTask {
 
-    private int userID;
+    private String taskType = "Reduce";
 
-    public Reducer(int userID) {
-        this.userID = userID;
+    public String getTaskType() {
+        return taskType;
     }
 
-    public int getUserID() {
-        return this.userID;
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public Reducer(int userID) {
+        this.taskID = userID;
+    }
+
+    public int getTaskID() {
+        return this.taskID;
     }
 
 }

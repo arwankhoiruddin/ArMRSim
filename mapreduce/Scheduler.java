@@ -5,12 +5,11 @@ import hardware.Cluster;
 import hardware.MRNode;
 import org.apache.commons.math3.distribution.ZipfDistribution;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Random;
+import java.util.*;
 
 public class Scheduler {
+
+    public static int duration;
 
     public static void scheduleMap(Cluster cluster, Mapper[] mappers) {
 
@@ -60,6 +59,111 @@ public class Scheduler {
         }
     }
 
+    public static void runMapper(Cluster cluster) {
+        System.out.println("Start running mapper");
+        // the length of mapper is using Zipf distribution
+        MRNode[] mrNodes = cluster.getNodes();
+        int maxLengthRun = 1000;
+
+        // speculation threshold
+        double specThres = 0.7;
+
+        // keep running while there is still mappers in any nodes
+
+        int numMappers = Config.numUsers; // one user submit one map task
+
+        while (numMappers != 0) {
+
+            for (int i=0; i<mrNodes.length; i++) {
+
+                System.out.println("Node number: " + i);
+
+                ZipfDistribution zipfDistribution = new ZipfDistribution(maxLengthRun, 0.5);
+                if (mrNodes[i].getMapSlot().size() > 0) {
+                    System.out.println("Number of maps in node: " + mrNodes[i].getMapSlot().size());
+
+                    ArrayList<Mapper> m = mrNodes[i].getMapSlot();
+                    for (int map=0; map<m.size(); map++) {
+                        System.out.println("Map ID: " + m.get(map).getTaskID());
+                    }
+
+                    // generate length of the mappers
+                    int[] tmp = zipfDistribution.sample(numMappers);
+
+                    ArrayList<Integer> mapRunLengths = new ArrayList<Integer>();
+                    for (int t : tmp) {
+                        mapRunLengths.add(t);
+                    }
+
+                    int j = 0;
+                    ArrayList<Mapper> mappers = mrNodes[i].getMapSlot();
+
+                    while (true) {
+
+                        if (mrNodes[i].getMapSlot().size() == 0) break;
+                        if (j == Config.numUsers) break;
+
+                        Mapper runningMapper = mappers.get(0); // run from the first mapper, cause this is FIFO
+
+                        // only run if the mapper is in the same node with the data block
+                        if (mrNodes[i].hasBlockNeeded(runningMapper.getTaskID())) {
+                            runningMapper.setLength(mapRunLengths.get(0));
+
+                            int progress = new Random().nextInt(mapRunLengths.get(0)); // generate random current progress
+                            int progressRate = new Random().nextInt(mapRunLengths.get(0)); // generate random progress rate for each mapper
+
+                            // LATE algorithm
+                            double progressScore = progress / mapRunLengths.get(0);
+                            double specDec = ((1 - progressScore) / progressRate);
+
+                            if (specDec < specThres) {
+                                System.out.println("Running mapper ID: " + runningMapper.getTaskID());
+                                // mapper will create intermediary results
+                                int numIntermediary = 1 + new Random().nextInt(99);
+                                // generate the intermediary
+                                for (int interm=0; interm < numIntermediary; interm++) {
+                                    Intermediary intermediary = new Intermediary(new Random().nextInt(50));
+                                    mrNodes[i].addIntermediary(intermediary);
+                                }
+
+                                // also don't forget to put it in history
+                                Cluster.histories.add(new History(runningMapper, runningMapper.getLength()));
+
+                                mrNodes[i].deleteMapper(runningMapper);
+                                mapRunLengths.remove(0);
+                            } else {
+                                speculateMapper(cluster, i, runningMapper);
+                                mrNodes[i].deleteMapper(runningMapper);
+                                mapRunLengths.remove(0);
+                            }
+                        } else { // the block is not in the current node. find the node containing the block needed
+                            System.out.println("Map ID speculated: " + runningMapper.getTaskID());
+
+                            for (int node=0; node<mrNodes.length; node++) {
+                                if (mrNodes[node].hasBlockNeeded(runningMapper.getTaskID())) {
+                                    if (mrNodes[node].hasMapSlot()) {
+                                        mrNodes[node].addMap(runningMapper);
+                                        mrNodes[i].deleteMapper(runningMapper);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        j++;
+                    }
+                }
+            }
+
+            // check if there is still mappers in any nodes
+            numMappers = 0;
+            for (int i=0; i < Config.numNodes; i++) {
+                numMappers += mrNodes[i].getMapSlot().size();
+            }
+            System.out.println("num mappers: " + numMappers);
+        }
+    }
+
     private static void speculateReducer(Cluster cluster, int currentNode, Reducer reducer) {
         MRNode[] nodes = cluster.getNodes();
 
@@ -79,79 +183,8 @@ public class Scheduler {
         }
     }
 
-    public static void runMapper(Cluster cluster) {
-        System.out.println("Start running mapper");
-        // the length of mapper is using Zipf distribution
-        MRNode[] mrNodes = cluster.getNodes();
-        int maxLengthRun = 1000;
+    public static void copyJob(int sourceNode, int targetNode) {
 
-        // speculation threshold
-        double specThres = 0.7;
-
-        // keep running while there is still mappers in any nodes
-        int numMappers = 100000;
-
-        while (numMappers != 0) {
-
-            for (int i=0; i<mrNodes.length; i++) {
-
-                ZipfDistribution zipfDistribution = new ZipfDistribution(maxLengthRun, 0.5);
-                if (mrNodes[i].getMapSlot().size() > 0) {
-                    int[] tmp = zipfDistribution.sample(mrNodes[i].getMapSlot().size());
-                    ArrayList<Integer> mapRunLengths = new ArrayList<Integer>();
-                    for (int t : tmp) {
-                        mapRunLengths.add(t);
-                    }
-
-                    int j = 0;
-                    while (true) {
-
-                        if (mrNodes[i].getMapSlot().size() == 0) break;
-                        if (j == Config.numUsers) break;
-
-                        ArrayList<Mapper> mappers = mrNodes[i].getMapSlot();
-
-                        Mapper runningMapper = mappers.get(0); // run from the first mapper, cause this is FIFO
-
-                        // only run if the mapper is in the same node with the data block
-                        if (mrNodes[i].hasBlockNeeded(runningMapper.getUserID())) {
-                            int progress = new Random().nextInt(mapRunLengths.get(0)); // generate random current progress
-                            int progressRate = new Random().nextInt(mapRunLengths.get(0)); // generate random progress rate for each mapper
-
-                            // LATE algorithm
-                            double progressScore = progress / mapRunLengths.get(0);
-                            double specDec = ((1 - progressScore) / progressRate);
-
-                            if (specDec < specThres) {
-                                mrNodes[i].deleteMapper(runningMapper);
-                                mapRunLengths.remove(0);
-                            } else {
-                                speculateMapper(cluster, i, runningMapper);
-                                mrNodes[i].deleteMapper(runningMapper);
-                                mapRunLengths.remove(0);
-                            }
-                        } else { // the block is not in the current node. find the node containing the block needed
-                            for (int node=0; node<mrNodes.length; node++) {
-                                if (mrNodes[node].hasBlockNeeded(runningMapper.getUserID())) {
-                                    if (mrNodes[node].hasMapSlot()) {
-                                        mrNodes[node].addMap(runningMapper);
-                                        mrNodes[i].deleteMapper(runningMapper);
-                                    }
-                                }
-                            }
-                        }
-
-                        j++;
-                    }
-                }
-            }
-
-            // check if there is still mappers in any nodes
-            numMappers = 0;
-            for (int i=0; i < Config.numNodes; i++) {
-                numMappers += mrNodes[i].getMapSlot().size();
-            }
-        }
     }
 
     public static void scheduleReducer(Cluster cluster) {
