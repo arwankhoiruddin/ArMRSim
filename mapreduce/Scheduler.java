@@ -331,7 +331,8 @@ public class Scheduler {
                     ArrayList<Reducer> reducers = mrNodes[i].getReduceSlot();
 
                     for (int j = 0; j < reduceRunLengths.length; j++) {
-                        Reducer runningReducer = reducers.get(mrNodes[i].getReduceSlot().size());
+                        int size = mrNodes[i].getReduceSlot().size();
+                        Reducer runningReducer = reducers.get(0); // take the first one
 
                         // rTuner algorithm
                         double progressScore;
@@ -380,7 +381,7 @@ public class Scheduler {
                 }
             }
 
-            // check if there is still mappers in any nodes
+            // check if there is still reducers in any nodes
             numReducers = 0;
             for (int i = 0; i < Config.numNodes; i++) {
                 numReducers += mrNodes[i].getMapSlot().size();

@@ -41,14 +41,6 @@ public class Main {
 
         // check the intermediaries on each nodes
         MRNode[] nodes = cluster.getNodes();
-//        for (int i=0; i<Config.numNodes; i++) {
-//            System.out.println("Node number: " + i);
-//            ArrayList<Intermediary> intermediaries = nodes[i].getIntermediaries();
-//            System.out.println("Number of intermediaries: " + intermediaries.size());
-//            for (Intermediary intermediary: intermediaries) {
-//                System.out.println("Intermediary ID: " + intermediary.getDataID());
-//            }
-//        }
 
         // schedule the reducer
         Scheduler.scheduleReducer(cluster);
@@ -57,15 +49,8 @@ public class Main {
             System.out.println("Node number: " + i + " has reduce slot: " + nodes[i].getReduceSlot().size());
         }
 
-//        int numReducer = -1;
-//        int nodeNumber = 0;
-//        while (numReducer != 0) {
-//            System.out.println(nodes[nodeNumber].getReduceSlot());
-//            nodeNumber++;
-//        }
-
-//        Scheduler.runReducer(cluster);
         // run reducers phase and speculate when needed
+        Scheduler.runReducer(cluster);
 
         System.out.println("Finished running");
     }
