@@ -1,6 +1,6 @@
 # MapReduce Simulator
 
-This is a MapReduce simulator used in my PhD at Universiti Technology PETRONAS, Malaysia. 
+This is a MapReduce simulator used in Arwan Ahmad Khoiruddin's PhD at Universiti Technology PETRONAS, Malaysia. 
 
 The goals of the simulator is to simulate low-level work of MapReduce especially the scheduling part. Thus, we can easily design and prerun our scheduling algorithm in this platform before implementing it in the real MapReduce system.
 
