@@ -194,19 +194,28 @@ public class Scheduler {
         // sort and shuffle phase - sorting the intermediaries
         MRNode[] nodes = cluster.getNodes();
 
-        // LBBS Algorithm
         int intermediaryPartition = 0;
         ArrayList<Integer> allInterms = new ArrayList<>();
 
-        for (int i=0; i<Config.numNodes; i++) {
+        for (int i = 0; i < Config.numNodes; i++) {
             ArrayList<Intermediary> intermediaries = nodes[i].getIntermediaries();
-            for (Intermediary intermediary: intermediaries) {
+            for (Intermediary intermediary : intermediaries) {
                 allInterms.add(intermediary.getDataID());
             }
 
             intermediaryPartition += intermediaries.size();
         }
 
+        switch (Config.reduceScheduler) {
+            case LBBS:
+                LBBSAlgorithm(allInterms, intermediaryPartition, nodes);
+                break;
+        }
+    }
+
+    public static void LBBSAlgorithm(ArrayList<Integer> allInterms, int intermediaryPartition, MRNode[] nodes) {
+
+        // LBBS Algorithm
         // generate the locality matrix
         int[][] localMatrix = new int[allInterms.size()][Config.numNodes];
         for (int i=0; i<Config.numNodes; i++) {
@@ -243,6 +252,20 @@ public class Scheduler {
         // sort the intermediaries
         Collections.sort(allInterms);
 
+        ArrayList<Reducer> reducers = new ArrayList<>();
+
+        // calculate the number of reducers generated
+        int numReduce = 0;
+        int t = allInterms.get(0);
+        for (int n:allInterms) {
+            if (n != t) {
+                t = n;
+                numReduce++;
+            }
+        }
+
+        System.out.println("Number of reducer: " + numReduce);
+
         // find the workloads for each nodes
         ArrayList<Integer> heap = new ArrayList<>();
 
@@ -254,9 +277,6 @@ public class Scheduler {
             heap.add(tmp);
         }
 
-        // randomize the number of reducer after shuffled
-        int numReducer = 1 + new Random().nextInt(Config.numNodes * Config.numReduceSlots);
-
         // distribute the reducers
         while (heap.size() > 0) {
             int min = 1000000;
@@ -266,9 +286,9 @@ public class Scheduler {
             }
 
             // distribute Reducer while still any
-            if (numReducer > 0) {
-                System.out.println("allocating reducer to node number " + min);
-                nodes[heap.indexOf(min)].addReduce(new Reducer(new Random().nextInt(numReducer)));
+            if (numReduce > 0) {
+                System.out.println("allocating reducer to node number " + heap.indexOf(min));
+                nodes[heap.indexOf(min)].addReduce(new Reducer(new Random().nextInt(numReduce)));
             }
 
             heap.remove((Integer) min);
@@ -285,8 +305,7 @@ public class Scheduler {
         // speculation threshold
         double specThres = 0.7;
 
-
-        // keep running while there is still mappers in any nodes
+        // keep running while there is still reducers in any nodes
         int numReducers = 100000;
 
         while (numReducers != 0) {

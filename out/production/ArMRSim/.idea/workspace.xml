@@ -2,10 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="68f84bbf-4725-44aa-b345-ce0ab40601ee" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/mapreduce/History.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mapreduce/MRTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coba.java" beforeDir="false" afterPath="$PROJECT_DIR$/Coba.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/config/Config.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hardware/Cluster.java" beforeDir="false" afterPath="$PROJECT_DIR$/hardware/Cluster.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hardware/MRNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/hardware/MRNode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mapreduce/DataBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/mapreduce/DataBlock.java" afterDir="false" />
@@ -13,6 +14,19 @@
       <change beforePath="$PROJECT_DIR$/mapreduce/Mapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/mapreduce/Mapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mapreduce/Reducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/mapreduce/Reducer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mapreduce/Scheduler.java" beforeDir="false" afterPath="$PROJECT_DIR$/mapreduce/Scheduler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArMRSim/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArMRSim/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArMRSim/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArMRSim/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArMRSim/Coba.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArMRSim/Coba.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArMRSim/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArMRSim/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArMRSim/config/Config.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArMRSim/config/Config.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArMRSim/hardware/Cluster.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArMRSim/hardware/Cluster.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArMRSim/hardware/MRNode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArMRSim/hardware/MRNode.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArMRSim/mapreduce/DataBlock.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArMRSim/mapreduce/DataBlock.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArMRSim/mapreduce/Intermediary.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArMRSim/mapreduce/Intermediary.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArMRSim/mapreduce/Mapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArMRSim/mapreduce/Mapper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArMRSim/mapreduce/Reducer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArMRSim/mapreduce/Reducer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArMRSim/mapreduce/Scheduler$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArMRSim/mapreduce/Scheduler$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArMRSim/mapreduce/Scheduler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArMRSim/mapreduce/Scheduler.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MRSimulator/src/edu/buffalo/ArwTests/ArwCompletableFuture.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MRSimulator/src/edu/buffalo/ArwTests/ArwCompletableFuture.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../fp-hadoop" beforeDir="false" afterPath="$PROJECT_DIR$/../fp-hadoop" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../fphadoop-setup" beforeDir="false" afterPath="$PROJECT_DIR$/../fphadoop-setup" afterDir="false" />
@@ -33,10 +47,23 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="32" column="9" lean-forward="true" selection-start-line="32" selection-start-column="9" selection-end-line="32" selection-end-column="9" />
+            <state relative-caret-position="318">
+              <caret line="48" column="70" selection-start-line="48" selection-start-column="70" selection-end-line="48" selection-end-column="70" />
               <folding>
                 <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/mapreduce/Mapper.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="30">
+              <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+              <folding>
+                <element signature="e#128#129#0" expanded="true" />
+                <element signature="e#159#160#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -45,35 +72,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/mapreduce/Scheduler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="430">
-              <caret line="121" column="106" selection-start-line="121" selection-start-column="106" selection-end-line="121" selection-end-column="106" />
+            <state relative-caret-position="172">
+              <caret line="251" column="44" selection-start-line="251" selection-start-column="44" selection-end-line="251" selection-end-column="44" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/mapreduce/History.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
-              <folding>
-                <element signature="e#184#185#0" expanded="true" />
-                <element signature="e#211#212#0" expanded="true" />
-                <element signature="e#306#307#0" expanded="true" />
-                <element signature="e#335#336#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/mapreduce/Intermediary.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
             </state>
           </provider>
         </entry>
@@ -81,23 +84,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/hardware/Cluster.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="14" column="67" selection-start-line="14" selection-start-column="67" selection-end-line="14" selection-end-column="67" />
+            <state relative-caret-position="181">
+              <caret line="43" selection-start-line="43" selection-end-line="43" />
               <folding>
                 <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/mapreduce/Reducer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" column="37" lean-forward="true" selection-start-line="2" selection-start-column="37" selection-end-line="2" selection-end-column="37" />
-              <folding>
-                <element signature="e#132#133#0" expanded="true" />
-                <element signature="e#163#164#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -106,8 +96,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/hardware/MRNode.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="26" column="5" lean-forward="true" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
+            <state relative-caret-position="181">
+              <caret line="108" column="5" selection-start-line="108" selection-start-column="5" selection-end-line="108" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1264#1265#0" expanded="true" />
@@ -122,8 +112,8 @@
                 <element signature="e#2201#2202#0" expanded="true" />
                 <element signature="e#2252#2253#0" expanded="true" />
                 <element signature="e#2290#2291#0" expanded="true" />
-                <element signature="e#2337#2338#0" expanded="true" />
-                <element signature="e#2380#2381#0" expanded="true" />
+                <element signature="e#2705#2706#0" expanded="true" />
+                <element signature="e#2748#2749#0" expanded="true" />
                 <element signature="e#2430#2431#0" expanded="true" />
                 <element signature="e#2477#2478#0" expanded="true" />
               </folding>
@@ -134,8 +124,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/config/Config.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="24" column="46" selection-start-line="24" selection-start-column="46" selection-end-line="24" selection-end-column="46" />
+            <state relative-caret-position="197">
+              <caret line="15" column="34" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -164,6 +154,13 @@
       <find>zipf</find>
       <find>getuserid</find>
       <find>`</find>
+      <find>addmap</find>
+      <find>is added</find>
+      <find>delete</find>
+      <find>getinter</find>
+      <find>intermediari</find>
+      <find>latency</find>
+      <find>intermediar</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -183,18 +180,18 @@
         <option value="$PROJECT_DIR$/hardware/MRSwitch.java" />
         <option value="$PROJECT_DIR$/mapreduce/MapScheduler.java" />
         <option value="$PROJECT_DIR$/mapreduce/ReduceScheduler.java" />
-        <option value="$PROJECT_DIR$/config/Config.java" />
         <option value="$PROJECT_DIR$/Coba.java" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/mapreduce/DataBlock.java" />
-        <option value="$PROJECT_DIR$/Main.java" />
         <option value="$PROJECT_DIR$/mapreduce/MRTask.java" />
-        <option value="$PROJECT_DIR$/hardware/MRNode.java" />
-        <option value="$PROJECT_DIR$/hardware/Cluster.java" />
         <option value="$PROJECT_DIR$/mapreduce/Reducer.java" />
         <option value="$PROJECT_DIR$/mapreduce/Mapper.java" />
         <option value="$PROJECT_DIR$/mapreduce/Intermediary.java" />
         <option value="$PROJECT_DIR$/mapreduce/History.java" />
+        <option value="$PROJECT_DIR$/hardware/Cluster.java" />
+        <option value="$PROJECT_DIR$/config/Config.java" />
+        <option value="$PROJECT_DIR$/hardware/MRNode.java" />
+        <option value="$PROJECT_DIR$/Main.java" />
         <option value="$PROJECT_DIR$/mapreduce/Scheduler.java" />
       </list>
     </option>
@@ -310,8 +307,8 @@
     <frame x="0" y="23" width="1440" height="825" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25679544" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4981203" visible="true" weight="0.25679544" />
+      <window_info id="Structure" order="1" sideWeight="0.5018797" side_tool="true" weight="0.25679544" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
       <window_info id="UI Designer" order="4" />
@@ -319,7 +316,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3287858" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.27421555" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -377,30 +374,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/Config.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="24" column="46" selection-start-line="24" selection-start-column="46" selection-end-line="24" selection-end-column="46" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/mapreduce/DataBlock.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
           <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="32" column="9" lean-forward="true" selection-start-line="32" selection-start-column="9" selection-end-line="32" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -422,27 +399,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mapreduce/Mapper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
-          <folding>
-            <element signature="e#128#129#0" expanded="true" />
-            <element signature="e#159#160#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hardware/Cluster.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="14" column="67" selection-start-line="14" selection-start-column="67" selection-end-line="14" selection-end-column="67" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/mapreduce/Intermediary.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
@@ -450,10 +406,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/mapreduce/History.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="14" selection-start-line="5" selection-start-column="14" selection-end-line="5" selection-end-column="14" />
+          <folding>
+            <element signature="e#184#185#0" expanded="true" />
+            <element signature="e#211#212#0" expanded="true" />
+            <element signature="e#306#307#0" expanded="true" />
+            <element signature="e#335#336#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/hardware/MRNode.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" column="5" lean-forward="true" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
+        <state relative-caret-position="181">
+          <caret line="108" column="5" selection-start-line="108" selection-start-column="5" selection-end-line="108" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1264#1265#0" expanded="true" />
@@ -468,31 +437,59 @@
             <element signature="e#2201#2202#0" expanded="true" />
             <element signature="e#2252#2253#0" expanded="true" />
             <element signature="e#2290#2291#0" expanded="true" />
-            <element signature="e#2337#2338#0" expanded="true" />
-            <element signature="e#2380#2381#0" expanded="true" />
+            <element signature="e#2705#2706#0" expanded="true" />
+            <element signature="e#2748#2749#0" expanded="true" />
             <element signature="e#2430#2431#0" expanded="true" />
             <element signature="e#2477#2478#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mapreduce/History.java">
+    <entry file="file://$PROJECT_DIR$/mapreduce/Mapper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
+        <state relative-caret-position="30">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
           <folding>
-            <element signature="e#184#185#0" expanded="true" />
-            <element signature="e#211#212#0" expanded="true" />
-            <element signature="e#306#307#0" expanded="true" />
-            <element signature="e#335#336#0" expanded="true" />
+            <element signature="e#128#129#0" expanded="true" />
+            <element signature="e#159#160#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hardware/Cluster.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="181">
+          <caret line="43" selection-start-line="43" selection-end-line="43" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/Config.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="15" column="34" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="318">
+          <caret line="48" column="70" selection-start-line="48" selection-start-column="70" selection-end-line="48" selection-end-column="70" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/mapreduce/Scheduler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="430">
-          <caret line="121" column="106" selection-start-line="121" selection-start-column="106" selection-end-line="121" selection-end-column="106" />
+        <state relative-caret-position="172">
+          <caret line="251" column="44" selection-start-line="251" selection-start-column="44" selection-end-line="251" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
