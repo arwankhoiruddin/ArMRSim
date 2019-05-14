@@ -2,31 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="68f84bbf-4725-44aa-b345-ce0ab40601ee" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Coba.java" beforeDir="false" afterPath="$PROJECT_DIR$/Coba.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/config/Config.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hardware/Cluster.java" beforeDir="false" afterPath="$PROJECT_DIR$/hardware/Cluster.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hardware/MRNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/hardware/MRNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapreduce/DataBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/mapreduce/DataBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapreduce/Intermediary.java" beforeDir="false" afterPath="$PROJECT_DIR$/mapreduce/Intermediary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapreduce/Mapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/mapreduce/Mapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapreduce/Reducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/mapreduce/Reducer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapreduce/Scheduler.java" beforeDir="false" afterPath="$PROJECT_DIR$/mapreduce/Scheduler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ArMRSim/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArMRSim/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ArMRSim/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArMRSim/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ArMRSim/Coba.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArMRSim/Coba.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ArMRSim/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArMRSim/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ArMRSim/config/Config.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArMRSim/config/Config.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ArMRSim/hardware/Cluster.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArMRSim/hardware/Cluster.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ArMRSim/hardware/MRNode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArMRSim/hardware/MRNode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ArMRSim/mapreduce/DataBlock.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArMRSim/mapreduce/DataBlock.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ArMRSim/mapreduce/Intermediary.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArMRSim/mapreduce/Intermediary.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ArMRSim/mapreduce/Mapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArMRSim/mapreduce/Mapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ArMRSim/mapreduce/Reducer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArMRSim/mapreduce/Reducer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ArMRSim/mapreduce/Scheduler$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArMRSim/mapreduce/Scheduler$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ArMRSim/mapreduce/Scheduler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArMRSim/mapreduce/Scheduler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MRSimulator/src/edu/buffalo/ArwTests/ArwCompletableFuture.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MRSimulator/src/edu/buffalo/ArwTests/ArwCompletableFuture.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../fp-hadoop" beforeDir="false" afterPath="$PROJECT_DIR$/../fp-hadoop" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../fphadoop-setup" beforeDir="false" afterPath="$PROJECT_DIR$/../fphadoop-setup" afterDir="false" />
@@ -72,11 +48,23 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mapreduce/Scheduler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="290">
-              <caret line="281" column="30" lean-forward="true" selection-start-line="281" selection-start-column="30" selection-end-line="281" selection-end-column="30" />
+            <state relative-caret-position="140">
+              <caret line="223" column="29" lean-forward="true" selection-start-line="223" selection-start-column="29" selection-end-line="223" selection-end-column="29" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="270">
+                <caret line="18" column="127" selection-start-line="18" selection-start-column="127" selection-end-line="18" selection-end-column="127" />
+              </first_editor>
+              <second_editor />
             </state>
           </provider>
         </entry>
@@ -121,11 +109,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/config/Config.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="332">
-              <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
+            <state relative-caret-position="197">
+              <caret line="16" column="89" lean-forward="true" selection-start-line="16" selection-start-column="89" selection-end-line="16" selection-end-column="89" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -191,7 +179,6 @@
         <option value="$PROJECT_DIR$/mapreduce/MapScheduler.java" />
         <option value="$PROJECT_DIR$/mapreduce/ReduceScheduler.java" />
         <option value="$PROJECT_DIR$/Coba.java" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/mapreduce/DataBlock.java" />
         <option value="$PROJECT_DIR$/mapreduce/MRTask.java" />
         <option value="$PROJECT_DIR$/mapreduce/Reducer.java" />
@@ -203,6 +190,7 @@
         <option value="$PROJECT_DIR$/Main.java" />
         <option value="$PROJECT_DIR$/mapreduce/Scheduler.java" />
         <option value="$PROJECT_DIR$/config/Config.java" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -317,7 +305,7 @@
     <frame x="0" y="23" width="1440" height="825" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4981203" visible="true" weight="0.25679544" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4981203" visible="true" weight="0.25679544" />
       <window_info id="Structure" order="1" sideWeight="0.5018797" side_tool="true" weight="0.25679544" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -326,7 +314,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.27421555" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.27421555" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -350,13 +338,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="4" column="1" lean-forward="true" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="56" lean-forward="true" selection-start-line="6" selection-start-column="56" selection-end-line="6" selection-end-column="56" />
         </state>
       </provider>
     </entry>
@@ -486,23 +467,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mapreduce/Scheduler.java">
+    <entry file="file://$PROJECT_DIR$/config/Config.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="290">
-          <caret line="281" column="30" lean-forward="true" selection-start-line="281" selection-start-column="30" selection-end-line="281" selection-end-column="30" />
+        <state relative-caret-position="197">
+          <caret line="16" column="89" lean-forward="true" selection-start-line="16" selection-start-column="89" selection-end-line="16" selection-end-column="89" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/Config.java">
+    <entry file="file://$PROJECT_DIR$/mapreduce/Scheduler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="332">
-          <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
+        <state relative-caret-position="140">
+          <caret line="223" column="29" lean-forward="true" selection-start-line="223" selection-start-column="29" selection-end-line="223" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="270">
+            <caret line="18" column="127" selection-start-line="18" selection-start-column="127" selection-end-line="18" selection-end-column="127" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="56" lean-forward="true" selection-start-line="6" selection-start-column="56" selection-end-line="6" selection-end-column="56" />
         </state>
       </provider>
     </entry>
