@@ -1,11 +1,15 @@
 package config;
 
+import hardware.Cluster;
 import mapreduce.MapScheduler;
 import mapreduce.ReduceScheduler;
 
 import java.util.Random;
 
 public class Config {
+
+    public static Cluster cluster;
+
     public static int numUsers = 10;
 
     public static int blockSize = 64; // in megabytes

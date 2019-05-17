@@ -1,5 +1,5 @@
 package mapreduce;
 
 public enum ReduceScheduler {
-    LBBS;
+    FIFO, LBBS;
 }

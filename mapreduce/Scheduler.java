@@ -5,7 +5,11 @@ import hardware.Cluster;
 import hardware.MRNode;
 import org.apache.commons.math3.distribution.ZipfDistribution;
 
+import java.lang.reflect.Array;
 import java.util.*;
+
+import static config.Config.cluster;
+import static config.Config.numNodes;
 
 public class Scheduler {
 
@@ -15,12 +19,12 @@ public class Scheduler {
 
         switch (Config.mapScheduler) {
             case FIFO:
-                FIFOScheduler(cluster, mappers);
+                FIFOMapScheduler(cluster, mappers);
                 break;
         }
     }
 
-    private static void FIFOScheduler(Cluster cluster, Mapper[] mappers) {
+    private static void FIFOMapScheduler(Cluster cluster, Mapper[] mappers) {
         // add mapper into the nodes based on the arrival
         // and just add into the nodes that have empty map slot
         MRNode[] nodes = cluster.getNodes();
@@ -39,7 +43,35 @@ public class Scheduler {
         }
     }
 
-    private static void speculateMapper(Cluster cluster, int currentNode, Mapper mapper) {
+    private static void FIFOMapScheduler() {
+        // schedule to all available slots in all nodes
+
+        MRNode[] nodes = cluster.getNodes();
+
+        int nodeNum = 0;
+        while (nodeNum < Config.numNodes) {
+
+            System.out.println("Node number: " + nodeNum);
+
+            if (nodes[nodeNum].hasMapSlot()) {
+
+                // only allocate if there is map task in queue
+                if (Cluster.mapperQueue.size() > 0) {
+
+                    Mapper allocatedMap = Cluster.mapperQueue.get(0);
+                    nodes[nodeNum].addMap(allocatedMap);
+
+                    System.out.println("Map number: " + allocatedMap.getTaskID());
+
+                    Cluster.mapperQueue.remove(allocatedMap);
+                }
+            }
+
+            nodeNum++;
+        }
+    }
+
+    private static int speculateMapper(Cluster cluster, int currentNode, Mapper mapper) {
         MRNode[] nodes = cluster.getNodes();
 
         int nodeNumber = 0;
@@ -50,8 +82,12 @@ public class Scheduler {
 
             if (nodeNumber != currentNode) {
                 if (nodes[nodeNumber].hasMapSlot()) {
+                    System.out.println("Mapper " + mapper.getTaskID() + " is speculated to node " + nodeNumber);
                     nodes[nodeNumber].addMap(mapper);
-                    break;
+
+                    // add the length of the task with the copying time
+                    mapper.setLength(mapper.getLength() + cluster.getTotalLatency(nodes[currentNode], nodes[nodeNumber]));
+                    return nodeNumber;
                 }
             }
 
@@ -59,111 +95,152 @@ public class Scheduler {
         }
     }
 
-    public static void runMapper(Cluster cluster) {
+    public static void runScheduleMapper(Cluster cluster) {
+
+        while (!Cluster.mapperQueue.isEmpty()) {
+
+            // schedule mappers in queue as long as there is/are slot(s) in nodes. if there is slot to run, then delete it from mapperQueue
+            switch (Config.mapScheduler) {
+                case FIFO:
+                    FIFOMapScheduler();
+                    break;
+            }
+
+            // now run the scheduled map
+            runMapper();
+        }
+    }
+
+    public static void runMapper() {
         System.out.println("Start running mapper");
-        // the length of mapper is using Zipf distribution
         MRNode[] mrNodes = cluster.getNodes();
         int maxLengthRun = 1000;
 
         // speculation threshold
         double specThres = 0.7;
 
-        // keep running while there is still mappers in any nodes
+        // run all mappers in each nodes
 
-        int numMappers = Config.numUsers; // one user submit one map task
+        int remainingMapper = -1;
 
-        while (numMappers != 0) {
+        while (remainingMapper != 0) {
 
-            for (int i=0; i<mrNodes.length; i++) {
+            remainingMapper = 0;
 
-                System.out.println("Node number: " + i);
+            for (int nodeNum=0; nodeNum < mrNodes.length; nodeNum++) {
 
-                ZipfDistribution zipfDistribution = new ZipfDistribution(maxLengthRun, 0.5);
-                if (mrNodes[i].getMapSlot().size() > 0) {
-                    System.out.println("Number of maps in node: " + mrNodes[i].getMapSlot().size());
+                System.out.println("=============");
+                System.out.println("Node number: " + nodeNum);
+                System.out.println("Number of mappers in this node: " + mrNodes[nodeNum].getMapSlot().size());
 
-                    ArrayList<Mapper> m = mrNodes[i].getMapSlot();
-                    for (int map=0; map<m.size(); map++) {
-                        System.out.println("Map ID: " + m.get(map).getTaskID());
-                    }
+                for (int i=0; i<mrNodes[nodeNum].getDataBlocks().size(); i++) {
+                    System.out.println("Block in this node: " + mrNodes[nodeNum].getDataBlocks().get(i).getBlockNumber());
+                }
 
-                    // generate length of the mappers
-                    int[] tmp = zipfDistribution.sample(numMappers);
+                for (int i=0; i<mrNodes[nodeNum].getMapSlot().size(); i++) {
+                    System.out.println("Mappers in this node: " + mrNodes[nodeNum].getMapSlot().get(i).getTaskID());
+                }
+
+                // run if there is mappers in the node
+                while (mrNodes[nodeNum].getMapSlot().size() > 0) {
+
+                    ArrayList<Mapper> mappers = mrNodes[nodeNum].getMapSlot();
+
+                    // randomize the length of maps in the nodes
+                    ZipfDistribution zipfDistribution = new ZipfDistribution(maxLengthRun, 0.5);
+                    int[] mapLengths = zipfDistribution.sample(mappers.size());
 
                     ArrayList<Integer> mapRunLengths = new ArrayList<Integer>();
-                    for (int t : tmp) {
+                    for (int t : mapLengths) {
                         mapRunLengths.add(t);
                     }
 
-                    int j = 0;
-                    ArrayList<Mapper> mappers = mrNodes[i].getMapSlot();
-
-                    while (true) {
-
-                        if (mrNodes[i].getMapSlot().size() == 0) break;
-                        if (j == Config.numUsers) break;
-
-                        Mapper runningMapper = mappers.get(0); // run from the first mapper, cause this is FIFO
-
-                        // only run if the mapper is in the same node with the data block
-                        if (mrNodes[i].hasBlockNeeded(runningMapper.getTaskID())) {
-                            runningMapper.setLength(mapRunLengths.get(0));
-
-                            int progress = new Random().nextInt(mapRunLengths.get(0)); // generate random current progress
-                            int progressRate = new Random().nextInt(mapRunLengths.get(0)); // generate random progress rate for each mapper
-
-                            // LATE algorithm
-                            double progressScore = progress / mapRunLengths.get(0);
-                            double specDec = ((1 - progressScore) / progressRate);
-
-                            if (specDec < specThres) {
-                                System.out.println("Running mapper ID: " + runningMapper.getTaskID());
+                    // run the map if it has the block needed
+                    for (int i=0; i<mrNodes[nodeNum].getMapSlot().size(); i++) {
+                        if (mrNodes[nodeNum].getMapSlot().size() > 0) {
+                            Mapper runningMapper = mappers.get(0);
+                            if (mrNodes[nodeNum].hasBlockNeeded(runningMapper.getTaskID())) {
                                 // mapper will create intermediary results
                                 int maxInterm = 20;
 
-                                int numIntermediary = 1 + new Random().nextInt(maxInterm);
-                                // generate the intermediary
-                                for (int interm=0; interm < numIntermediary; interm++) {
-                                    Intermediary intermediary = new Intermediary(new Random().nextInt(50));
-                                    mrNodes[i].addIntermediary(intermediary);
+                                int numIntermediary = 10 + new Random().nextInt(maxInterm);
+
+                                runningMapper.setLength(mapRunLengths.get(0));
+                                int progress = new Random().nextInt(mapRunLengths.get(0)); // generate random current progress
+                                double progressRate = new Random().nextDouble(); // generate random progress rate for each mapper
+
+                                // LATE algorithm
+                                double progressScore = (double) progress / mapRunLengths.get(0);
+
+                                double specDec = ((1 - progressScore) / progressRate);
+
+                                System.out.println("progressScore: " + progressScore);
+                                System.out.println("specDec: " + specDec);
+
+                                if (specDec < specThres) {
+                                    System.out.println("Running mapper ID: " + runningMapper.getTaskID());
+
+                                    // generate the intermediary
+                                    for (int interm=0; interm < numIntermediary; interm++) {
+                                        Intermediary intermediary = new Intermediary(new Random().nextInt(1 + interm));
+                                        mrNodes[nodeNum].addIntermediary(intermediary);
+                                    }
+
+                                    // also don't forget to put it in history
+                                    Cluster.histories.add(new History(runningMapper, runningMapper.getLength()));
+                                } else {
+                                    int newNode = speculateMapper(cluster, nodeNum, runningMapper);
+
+                                    // generate the intermediary
+                                    for (int interm=0; interm < numIntermediary; interm++) {
+                                        Intermediary intermediary = new Intermediary(new Random().nextInt(1 + interm));
+                                        mrNodes[newNode].addIntermediary(intermediary);
+                                    }
                                 }
 
-                                // also don't forget to put it in history
-                                Cluster.histories.add(new History(runningMapper, runningMapper.getLength()));
-
-                                mrNodes[i].deleteMapper(runningMapper);
+                                mrNodes[nodeNum].deleteMapper(runningMapper);
                                 mapRunLengths.remove(0);
-                            } else {
-                                speculateMapper(cluster, i, runningMapper);
-                                mrNodes[i].deleteMapper(runningMapper);
-                                mapRunLengths.remove(0);
-                            }
-                        } else { // the block is not in the current node. find the node containing the block needed
-                            System.out.println("Map ID speculated: " + runningMapper.getTaskID());
 
-                            for (int node=0; node<mrNodes.length; node++) {
-                                if (mrNodes[node].hasBlockNeeded(runningMapper.getTaskID())) {
-                                    if (mrNodes[node].hasMapSlot()) {
-                                        mrNodes[node].addMap(runningMapper);
-                                        mrNodes[i].deleteMapper(runningMapper);
-                                        break;
-                                    }
+                            } else { // the node does not have the block needed. Need to copy to the node containing the block
+
+                                int node;
+                                if (nodeNum == mrNodes.length-1)
+                                    node = 0;
+                                else
+                                    node = nodeNum + 1;
+
+                                while (true) {
+
+                                    if (node == mrNodes.length - 1)
+                                        node = 0;
+
+                                    if (mrNodes[node].hasBlockNeeded(runningMapper.getTaskID()))
+                                        if (mrNodes[node].hasMapSlot()) {
+                                            System.out.println("Map ID " + runningMapper.getTaskID() + " moved from " + nodeNum + " to node " + node);
+                                            mrNodes[node].addMap(runningMapper);
+                                            mrNodes[nodeNum].deleteMapper(runningMapper);
+
+                                            // total time needed
+                                            int transferTime = cluster.getTotalLatency(mrNodes[node], mrNodes[nodeNum]);
+                                            Cluster.histories.add(new History(runningMapper, runningMapper.getLength() + transferTime));
+
+                                            break;
+                                        }
+                                    node++;
                                 }
                             }
                         }
 
-                        j++;
                     }
                 }
             }
 
-            // check if there is still mappers in any nodes
-            numMappers = 0;
-            for (int i=0; i < Config.numNodes; i++) {
-                numMappers += mrNodes[i].getMapSlot().size();
+            for (int i=0; i<Config.numNodes; i++) {
+                remainingMapper += mrNodes[i].getMapSlot().size();
             }
-            System.out.println("num mappers: " + numMappers);
+            System.out.println("Remaining mappers need to run: " + remainingMapper);
         }
+
     }
 
     private static void speculateReducer(Cluster cluster, int currentNode, Reducer reducer) {
@@ -185,9 +262,67 @@ public class Scheduler {
         }
     }
 
-    public static void copyJob(int sourceNode, int targetNode) {
+    public static void runScheduleReducer(Cluster cluster) {
+        // sort and copy phase - sorting the intermediaries
+        MRNode[] nodes = cluster.getNodes();
 
+        int intermediaryPartition = 0;
+        ArrayList<Integer> allInterms = new ArrayList<>();
+
+        for (int i = 0; i < Config.numNodes; i++) {
+            ArrayList<Intermediary> intermediaries = nodes[i].getIntermediaries();
+            for (Intermediary intermediary : intermediaries) {
+                allInterms.add(intermediary.getDataID());
+            }
+
+            intermediaryPartition += intermediaries.size();
+        }
+
+        // sort the intermediaries
+        Collections.sort(allInterms);
+
+        int intermNum = allInterms.get(0);
+        int numCount = 0;
+        int numReducer = 1;
+
+        // distribute the sorted intermediaries into the nodes
+        // I think I can do something here for my research
+
+        for (int i=0; i<allInterms.size(); i++) {
+            if (allInterms.get(i) != intermNum) {
+                intermNum = allInterms.get(i);
+
+                // add reducers
+                Reducer reducer = new Reducer(intermNum);
+                reducer.setLength(numCount);
+                Cluster.reducerQueue.add(reducer);
+
+                numReducer++;
+                numCount = 0;
+            } else {
+                numCount++;
+            }
+        }
+
+        // now schedule the reducers
+        scheduleReducer(cluster);
     }
+
+
+//    public static void scheduleReducer() {
+//
+//        while (!Cluster.reducerQueue.isEmpty()) {
+//            switch (Config.reduceScheduler) {
+//                case FIFO:
+//                    FIFOReduceScheduler(cluster);
+//                    break;
+//                case LBBS:
+//                    LBBSAlgorithm(allInterms, intermediaryPartition, nodes);
+//                    break;
+//            }
+//        }
+//
+//    }
 
     public static void scheduleReducer(Cluster cluster) {
 
@@ -206,12 +341,135 @@ public class Scheduler {
             intermediaryPartition += intermediaries.size();
         }
 
-        switch (Config.reduceScheduler) {
-            case LBBS:
-                LBBSAlgorithm(allInterms, intermediaryPartition, nodes);
-                break;
+        while (!Cluster.reducerQueue.isEmpty()) {
+
+            switch (Config.reduceScheduler) {
+                case FIFO:
+                    FIFOReduceScheduler(cluster);
+                    break;
+                case LBBS:
+                    LBBSAlgorithm(allInterms, intermediaryPartition, nodes);
+                    break;
+            }
+
         }
     }
+
+    private static void FIFOReduceScheduler(Cluster cluster) {
+        // add reducer into the nodes based on the arrival
+        // and just add into the nodes that have empty map slot
+        MRNode[] nodes = cluster.getNodes();
+//        for (int i=0; i<mappers.length; i++) {
+//
+//            int nodeNumber = 0;
+//            while (true) {
+//                if (nodeNumber == cluster.getNodes().length)
+//                    nodeNumber = 0;
+//                if (nodes[nodeNumber].hasMapSlot()) {
+//                    nodes[nodeNumber].addMap(mappers[i]);
+//                    break;
+//                }
+//                nodeNumber++;
+//            }
+//        }
+    }
+//
+//    public static void LBBSAlgorithm(Cluster cluster) {
+//
+//        // LBBS Algorithm
+//        // generate the locality matrix
+//
+//        MRNode[] nodes = cluster.getNodes();
+//
+//        int maxInterms = 0;
+//        for (int i=0; i < nodes.length; i++) {
+//            for (Intermediary intermediary: nodes[i].getIntermediaries()) {
+//                if (maxInterms < intermediary.getDataID())
+//                    maxInterms = intermediary.getDataID();
+//            }
+//        }
+//
+//        System.out.println("max intermediate: " + maxInterms);
+//
+//        int tmp = 0;
+//        int[][] localMatrix = new int[maxInterms][Config.numNodes];
+//        for (int i=0; i<Config.numNodes; i++) {
+//            ArrayList<Intermediary> intermediaries = nodes[i].getIntermediaries();
+//            for (Intermediary intermediary: intermediaries) {
+//                localMatrix[intermediary.getDataID()][i] = 1;
+//            }
+//        }
+//
+//
+//        double[][] locality = new double[numReducers][Config.numNodes];
+//
+//        // calculate the locality
+//        for (int i=0; i<Config.numNodes; i++) {
+//            for (int j=0; j<allInterms.size(); j++) {
+//                int tmp = 0;
+//                for (int k=0; k<Config.numNodes; k++) {
+//                    tmp += localMatrix[j][k];
+//                }
+//                double locality1 = 0;
+//                if (tmp != 0)
+//                    locality1 = localMatrix[j][i] / tmp;
+//
+//                tmp = 0;
+//                for (int k=0; k<allInterms.size(); k++) {
+//                    tmp += localMatrix[k][i];
+//                }
+//                double locality2 = 0;
+//                if (tmp != 0)
+//                    locality2 = localMatrix[j][i] / tmp;
+//                locality[j][i] = locality1 * locality2;
+//            }
+//        }
+//
+//        // sort the intermediaries
+//        Collections.sort(allInterms);
+//
+//        ArrayList<Reducer> reducers = new ArrayList<>();
+//
+//        // calculate the number of reducers generated
+//        int numReduce = 0;
+//        int t = allInterms.get(0);
+//        for (int n:allInterms) {
+//            if (n != t) {
+//                t = n;
+//                numReduce++;
+//            }
+//        }
+//
+//        System.out.println("Number of reducer: " + numReduce);
+//
+//        // find the workloads for each nodes
+//        ArrayList<Integer> heap = new ArrayList<>();
+//
+//        for (int n=0; n<Config.numNodes; n++) {
+//            int tmp = 0;
+//            for (int p=0; p<intermediaryPartition; p++) {
+//                tmp += localMatrix[p][n];
+//            }
+//            heap.add(tmp);
+//        }
+//
+//        // distribute the reducers
+//        while (heap.size() > 0) {
+//            int min = 1000000;
+//            for (int temp: heap) {
+//                if (temp < min)
+//                    min = temp;
+//            }
+//
+//            // distribute Reducer while still any
+//            if (numReduce > 0) {
+//                System.out.println("allocating reducer to node number " + heap.indexOf(min));
+//                nodes[heap.indexOf(min)].addReduce(new Reducer(new Random().nextInt(numReduce)));
+//            }
+//
+//            heap.remove((Integer) min);
+//        }
+//    }
 
     public static void LBBSAlgorithm(ArrayList<Integer> allInterms, int intermediaryPartition, MRNode[] nodes) {
 
@@ -264,8 +522,6 @@ public class Scheduler {
             }
         }
 
-        System.out.println("Number of reducer: " + numReduce);
-
         // find the workloads for each nodes
         ArrayList<Integer> heap = new ArrayList<>();
 
@@ -288,7 +544,10 @@ public class Scheduler {
             // distribute Reducer while still any
             if (numReduce > 0) {
                 System.out.println("allocating reducer to node number " + heap.indexOf(min));
-                nodes[heap.indexOf(min)].addReduce(new Reducer(new Random().nextInt(numReduce)));
+                if (Cluster.reducerQueue.size() > 0) {
+                    nodes[heap.indexOf(min)].addReduce(Cluster.reducerQueue.get(0));
+                    Cluster.reducerQueue.remove(0);
+                }
             }
 
             heap.remove((Integer) min);

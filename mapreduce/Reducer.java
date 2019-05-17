@@ -16,8 +16,8 @@ public class Reducer extends MRTask {
         this.length = length;
     }
 
-    public Reducer(int userID) {
-        this.taskID = userID;
+    public Reducer(int taskID) {
+        this.taskID = taskID;
     }
 
     public int getTaskID() {

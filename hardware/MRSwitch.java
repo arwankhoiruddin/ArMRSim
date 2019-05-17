@@ -10,7 +10,7 @@ public class MRSwitch {
     public MRSwitch(int switchNumber, int routerNumber) {
         this.switchNumber = switchNumber;
         this.routerNumber = routerNumber;
-        this.latency = new Random().nextInt(10000);
+        this.latency = new Random().nextInt(10000); // normally it is gaussian random
 
     }
 

@@ -3,6 +3,8 @@ package hardware;
 import config.Config;
 import mapreduce.DataBlock;
 import mapreduce.History;
+import mapreduce.Mapper;
+import mapreduce.Reducer;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -13,6 +15,10 @@ public class Cluster {
     private MRSwitch switch2;
 
     public static ArrayList<History> histories = new ArrayList<>();
+
+    // represents the Map and Reduce queue in the master's job tracker
+    public static ArrayList<Mapper> mapperQueue = new ArrayList<>();
+    public static ArrayList<Reducer> reducerQueue = new ArrayList<>();
 
     public Cluster() {
 
@@ -58,8 +64,6 @@ public class Cluster {
         int numBlock = 0;
         DataBlock block = null;
 
-        int allBlocks = 0;
-
         for (int idUser = 0; idUser < dataByUser.length; idUser++) {
 
             // each user has certain amount of data. the data has to be split into blocks
@@ -69,14 +73,10 @@ public class Cluster {
             // block is characterized by user id
             block = new DataBlock(idUser);
 
-            numBlock *= Config.dataReplication;
-
-            allBlocks += numBlock;
-
-            for (int idBlock = 0; idBlock < numBlock; idBlock++) {
-
-                // maybe randomize the block placement is better
-                nodes[new Random().nextInt(Config.numNodes)].addBlock(block);
+            // replicate each block as much as Config.dataReplication
+            for (int rep=0; rep < Config.dataReplication; rep++) {
+                int tmp = new Random().nextInt(Config.numNodes);
+                nodes[tmp].addBlock(block);
             }
         }
     }

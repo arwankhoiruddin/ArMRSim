@@ -59,7 +59,7 @@ public class MRNode {
     }
 
     public boolean hasMapSlot() {
-        if (mapSlot.size() < Config.numMapSlots)
+        if (this.mapSlot.size() < Config.numMapSlots)
             return true;
         else
             return false;
@@ -84,7 +84,7 @@ public class MRNode {
 
     public void addMap(Mapper m) {
         if (hasMapSlot())
-            mapSlot.add(m);
+            this.mapSlot.add(m);
     }
 
     public void addIntermediary(Intermediary intermediary) {
